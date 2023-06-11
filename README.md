@@ -32,7 +32,7 @@ It has a few great selling points:
 
 * Multi-threaded by default: actix-web automatically configures a number of worker threads equal to the number of physical cores of the host machine - this can be easily configured to suite the needs of the application
 
-* Asynchronous: leveraging Rust [Futures](https://rust-lang.github.io/async-book/02_execution/02_future.html) and [async/await](https://rust-lang.github.io/async-book/03_async_await/01_chapter.html), actix-web recommends a pattern in which request handlers are completely non-blocking - allowing for worker threads that are awaiting some work (e.g. database operations) to begin handling new requests while they wait  
+* Asynchronous: built on top of [tokio](https://tokio.rs/), the best performing asynchronous Rust runtime, actix-web recommends a pattern in which request handlers are completely non-blocking - allowing for worker threads that are awaiting some work (e.g. database operations) to begin handling new requests while they wait  
 
 * Graceful shutdown default: when a critical failure occurs, actix-web allows active request handlers some time (default 30 seconds) to complete their requests before exiting the process 
 
@@ -46,3 +46,7 @@ Overall, it seems to have the best balance between maturity, durability, perform
 Standard MongoDB driver for Rust. Documentation can be found [here.](https://docs.rs/mongodb/latest/mongodb/)
 
 Note: this driver uses connection pooling by default (default pool of 20 connections).
+
+###serde + serde_json
+
+The standard of serialization and deserialization in Rust. Documentation can be found [here.](https://serde.rs/)
