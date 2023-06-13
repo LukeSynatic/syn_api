@@ -2,11 +2,12 @@ use actix_web::{Responder, HttpResponse, post, web::{scope, Data, Json, ServiceC
 use mongodb::{Database, bson::Document, options::ReplaceOptions};
 use futures::stream::StreamExt;
 
-use crate::{structs::requests::{find::FindRequest, find_one::FindOneRequest, insert_one::InsertOneRequest, insert_many::InsertManyRequest, update::{UpdateRequest, UpdateOptionsWrapper}, delete::DeleteRequest, aggregate::AggregateRequest}, traits::requests::{MongoRequest, FilterQuery, DocumentPayload}, utils::mongo::{collect_docs}};
+use crate::{structs::requests::{find::FindRequest, find_one::FindOneRequest, insert_one::InsertOneRequest, insert_many::InsertManyRequest, update::{UpdateRequest, UpdateOptionsWrapper}, delete::DeleteRequest, aggregate::AggregateRequest}, traits::requests::{MongoRequest, FilterQuery, DocumentPayload}, utils::mongo::{collect_docs}, middleware::ejson::EJsonV1};
 
 pub fn configure_mongo_service(cfg: &mut ServiceConfig) {
     cfg.service(
         scope("/v1")
+                    .wrap(EJsonV1)
                     .service(find)
                     .service(find_one)
                     .service(insert_one)

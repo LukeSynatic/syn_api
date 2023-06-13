@@ -22,6 +22,11 @@ mod routes {
     pub mod mongo_routes;
 }
 
+mod middleware {
+    pub mod extractors;
+    pub mod ejson;
+}
+
 mod utils {
     pub mod mongo;
     pub mod streams;
