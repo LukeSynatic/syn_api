@@ -1,5 +1,8 @@
 # Rust + Cargo
 /target
 
+#Environment
+.env
+
 # VS Code
 .vscode

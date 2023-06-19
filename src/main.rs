@@ -38,6 +38,7 @@ use actix_web::web::Data;
 use actix_web::{App, HttpServer};
 use mongodb::Client;
 use mongodb::options::ClientOptions;
+use dotenv::dotenv;
 
 use crate::routes::mongo_routes::configure_mongo_service;
 use crate::routes::stats_routes::configure_stats_service;
@@ -45,14 +46,18 @@ use crate::routes::user_routes::configure_user_service;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+
     env::set_var("RUST_LOG", "debug");
     env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
 
     // Configure mongodb client
-    let client_options = ClientOptions::parse("mongodb://localhost:27017").await.unwrap();
+    let mongo_uri = env::var("MONGODB_URI").unwrap();
+    let db_name = env::var("DB_NAME").unwrap();
+    let client_options = ClientOptions::parse(mongo_uri).await.unwrap();
     let client = Client::with_options(client_options).unwrap();
-    let db = client.database("synatic-mongodb-api");
+    let db = client.database(&db_name);
 
     /*  
         Server configuration and start:
@@ -63,7 +68,8 @@ async fn main() -> std::io::Result<()> {
 
         We then configure our routers by passing their config functions to configure()
     */
-    println!("🚀 Server listening on port 8080");
+    let port = env::var("PORT").unwrap().parse::<u16>().unwrap();
+    println!("🚀 Server listening on port {}", port);
     HttpServer::new(move || {
         let logger = Logger::default();
         App::new()
@@ -72,7 +78,7 @@ async fn main() -> std::io::Result<()> {
             .configure(configure_stats_service)
             .configure(configure_user_service)
             .configure(configure_mongo_service)
-    }).bind(("127.0.0.1", 8080))?
+    }).bind(("127.0.0.1", port))?
      .run()
      .await
 
