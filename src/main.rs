@@ -23,7 +23,6 @@ mod routes {
 }
 
 mod middleware {
-    pub mod extractors;
     pub mod ejson;
 }
 
