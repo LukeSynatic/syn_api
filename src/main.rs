@@ -62,8 +62,8 @@ async fn main() -> std::io::Result<()> {
         Server configuration and start:
 
         We need to call move on the closure passed to the server builder to move the ownership
-        MongoDB client in to the proper scope. The client is then bound to application data, 
-        making it accessible in every handler.
+        of the MongoDB client in to the proper scope. The client is then bound to application 
+        data, making it accessible in every handler.
 
         We then configure our routers by passing their config functions to configure()
     */
